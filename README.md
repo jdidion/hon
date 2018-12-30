@@ -40,9 +40,9 @@ The `create` command creates a new project with the following layout:
 |_README.md
 ```
 
-Additional files can also be created, and the contents of these files can be modified to some degree using recipes (see [Configuration](##Configuration).
+Additional files can also be created, and the contents of these files can be modified to some degree using recipes (see [Configuration](##Configuration)).
 
-Creating the pyproject.toml requires some metadata. The only required information is the project name, but other items such as description, version, and dependencies can either be specified on the command line or interactively.
+Creating the [pyproject.toml](PEP518) file requires some metadata. The only required information is the project name, but other items such as description, version, and dependencies can either be specified on the command line or interactively.
 
 If you do not specify a Python version for the project, the version is obtained from the currently running interpreter. The default Python version can also be specified in the config file. If you have [pyenv]() installed and no currently installed Python version satisfies the specified version, an appropriate version will be insalled for you.
 
@@ -153,7 +153,7 @@ Hon can also publish a Docker image for your python command line application. Yo
 
 * `--cmd` option specified on the command line
 * The first entry point (if any) in pyproject.toml
-* The __main__.py module, if any
+* The \_\_main\_\_.py module, if any
 
 ### Documentation
 
@@ -179,12 +179,11 @@ Hon comes with a shell script that install a few useful functions:
 3. Commit changes using `hon commit`. Strive for many small commits. Ideally, each commit should encompass a single, byte-sized chunk of work, such as fixing a bug or implementing a sub-task of a user story.
 4. Create a release using `hon release`.
 5. Optionally, publish the release to one or more repositories.
-6. Continue development. You can bump the version at release time, or do it now or sometime later (using `hon version`).
+6. Continue development. You can bump the version at release time, or do it sometime later (using `hon version`).
 
 ## Dependencies
 
 * Tools
-    * [pyproject.toml](PEP518): project metadata, dependencies, etc.
     * [Poetry](): dependency and build management
     * [Virtualenv]()/[pyenv-virtualenv](): Create and manage virtual environments
     * [Pytest](): unit testing (with pytest-cov plugin for coverage)
@@ -211,4 +210,6 @@ I've tried lots of developer tools - these are the best. If you disagree, feel f
 
 ### Will you support my favorite tool?
 
-Probably not. If you haven't already gotten the picture, Hon is unashamedly opinionated. Simplicity and flexibility are usually at odds, and Hon is all about simplicity. You are, of course, welcome to fork Hon and modify it as you wish.
+Maybe, but probably not. If you haven't already gotten the picture, Hon is unashamedly opinionated. Simplicity and flexibility are usually at odds, and Hon is all about simplicity.
+
+Feel free to request support for a tool by creating a GitHub issue. You are, of course, also welcome to fork Hon and modify it as you wish.
