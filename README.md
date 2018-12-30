@@ -1,5 +1,7 @@
 ![logo](docs/assets/logo.png)
 
+**Hon is currently in development. Not all of the functionality described here is yet available.**
+
 Hon is an opinionated project management tool. It strives to automate the mundane tasks of building, testing, and publishing python packages, freeing you to focus on the code.
 
 Hon bundles together a specific set of tools and relies upon a particular project organization. The best way to use Hon is to let it create your project for you, but it can also manage your existing projects if you follow the rules.
