@@ -1,0 +1,12 @@
+import pytest
+
+
+@pytest.yield_fixture
+def data():
+    # perform any setup work here
+    yield {{}}
+    # perform any teardown work here
+
+
+def test_basic(data):
+    assert False

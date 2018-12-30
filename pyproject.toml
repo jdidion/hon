@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "hon"
+version = "0.1.0"
+description = "Simple, opinionated CLI to run common build and deployment tasks."
+license = "MIT"
+authors = ["John Didion <github@didion.net>"]
+readme = "README.md"
+homepage = "https://github.com/jdidion/hon"
+repository = "https://github.com/jdidion/hon.git"
+classifiers = ["Development Status :: 4 - Beta"]
+include = [
+    "CHANGES.md",
+    "hon/templates/**/*"
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+autoclick = "^0.2.2"
+black = "*"
+flake8 = "^3.6.0"
+poetry = ">=0.12"
+pytest = "^3.0"
+pytest-cov = "^2.4"
+recommonmark = "^0.4.0"
+sphinx = "^1.8.3"
+tomlkit = "^0.5.3"
+
+[tool.poetry.scripts]
+hon = "hon:cli.hon"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
