@@ -204,7 +204,7 @@ Hon comes with a shell script that install a few useful functions:
 
 Hon pays homage to the people of Baltimore, who are known for being both hard-working and opinionated. Hon is also short for "honey do," as in a list of tasks you ask your favorite project manager to take care of for you. It's also a nice coincidence that Python ends with "hon."
 
-### An wheredja get dat artwork?
+### An wheredja get dat art?
 
 I found it using Google Image Search, and despite my best efforts have been unable to trace it back to its creator. If it's your work, please get in touch; I'm happy to attribute it to you, or to stop using it if you wish (though I hope you don't because I love it).
 
