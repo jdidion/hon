@@ -204,12 +204,14 @@ Hon comes with a shell script that install a few useful functions:
 
 Hon pays homage to the people of Baltimore, who are known for being both hard-working and opinionated. Hon is also short for "honey do," as in a list of tasks you ask your favorite project manager to take care of for you. It's also a nice coincidence that Python ends with "hon."
 
+### An wheredja get dat artwork?
+
+I found it using Google Image Search, and despite my best efforts have been unable to trace it back to its creator. If it's your work, please get in touch; I'm happy to attribute it to you, or to stop using it if you wish (though I hope you don't because I love it).
+
 ### Why did you choose these specific tools?
 
 I've tried lots of developer tools - these are the best. If you disagree, feel free to complain about it on HackerNews. 😊
 
 ### Will you support my favorite tool?
 
-Maybe, but probably not. If you haven't already gotten the picture, Hon is unashamedly opinionated. Simplicity and flexibility are usually at odds, and Hon is all about simplicity.
-
-Feel free to request support for a tool by creating a GitHub issue. You are, of course, also welcome to fork Hon and modify it as you wish.
+Maybe, but probably not. If you haven't already gotten the picture, Hon is unashamedly opinionated. Simplicity and flexibility are usually at odds, and Hon is all about simplicity. That said, feel free to request support for a tool by creating a GitHub issue. You are, of course, also welcome to fork Hon and modify it as you wish.
