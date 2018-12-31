@@ -196,6 +196,7 @@ Hon comes with a shell script that install a few useful functions:
 * Other dependencies
     * [AutoClick]() and [Click](): command line interface
     * [tomlkit](): TOML parsing
+    * [GitPython](https://gitpython.readthedocs.io/): git repo actions
     * [github-release](https://github.com/j0057/github-release)
 
 ## FAQ

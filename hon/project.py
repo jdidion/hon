@@ -2,11 +2,18 @@ from pathlib import Path
 from typing import Optional
 from urllib.request import urlopen
 
+from git import Repo
+from git.repo.fun import is_git_dir
+
 from hon.templates import get_templates
 from hon.utils import read_toml
 
 
 LICENSE_URL = "https://raw.githubusercontent.com/spdx/license-list-data/master/text/{license}.txt"
+
+
+class InvalidProjectError(Exception):
+    pass
 
 
 class UnknownLicenseError(Exception):
@@ -16,15 +23,25 @@ class UnknownLicenseError(Exception):
 
 
 class Project:
-    def __init__(self, project_dir: Path):
-        self.project_dir = project_dir
-        self.pyproject_file = project_dir / "pyproject.toml"
-        if not self.pyproject_file.exists():
+    def __init__(self, root_dir: Path, git_repo: Optional[Repo] = None):
+        self.root_dir = root_dir
+        self._pyproject_file = root_dir / "pyproject.toml"
+
+        if not self._pyproject_file.exists():
             raise FileNotFoundError(
                 f"Hon requires a pyproject.toml file in the root of project"
-                f"directory {project_dir}."
+                f"directory {root_dir}."
             )
-        self.pyproject = read_toml(self.pyproject_file)
+
+        if git_repo is None:
+            if not is_git_dir(self.root_dir):
+                raise InvalidProjectError(
+                    f"Project directory {self.root_dir} is not a git repository"
+                )
+            git_repo = Repo(self.root_dir)
+
+        self._pyproject = read_toml(self._pyproject_file)
+        self._git_repo = git_repo
 
     def __getattr__(self, item):
         return self.get_attribute(item, required=False, section="tool.poetry")
@@ -37,7 +54,7 @@ class Project:
         else:
             path = []
         path.extend(key.split("."))
-        d = self.pyproject
+        d = self._pyproject
         for item in path:
             if not isinstance(d, dict):
                 raise KeyError(f"Path {'.'.join(path)} not found in pyproject.toml")
@@ -51,11 +68,11 @@ class Project:
 
     def create_from_templates(self):
         template_dir = get_templates()
-        template_dir.create(self.project_dir, {"project": self})
+        template_dir.create(self.root_dir, {"project": self})
 
     @property
     def license_text(self):
-        license_file = self.project_dir / "LICENSE"
+        license_file = self.root_dir / "LICENSE"
         if license_file.exists():
             with open(license_file, "rt") as inp:
                 return inp.read()
@@ -68,3 +85,6 @@ class Project:
             return response.read().decode("utf-8")
         except:
             raise UnknownLicenseError(license)
+
+    def add_all_untracked(self):
+        self._git_repo.index.add(self._git_repo.untracked_files)
