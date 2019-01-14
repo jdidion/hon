@@ -8,9 +8,25 @@ Hon bundles together a specific set of tools and relies upon a particular projec
 
 Hon is not for everyone. It is minimally configurable and has relatively few options. If you are a developer who likes everything about your project setup to be *just so*, you will probably get frustrated with Hon. However, if you are willing to sacrifice flexibility for productivity, Hon will make your life as a developer much easier.
 
-## Installation
+## Requirements
 
-Hon requires Python 3.6+. We also suggest using [pyenv](https://github.com/pyenv/pyenv) to manage your python versions.
+Hon requires Python 3.6+.
+
+The following tools are required to be installed. We suggest using [pipsi]() to perform the installation. The provided [setup](tools/setup_tools.sh) script will install all of these tools for you.
+
+* [Poetry]() >= 0.12: dependency and build management
+* [pyenv](https://github.com/pyenv/pyenv): install and manage your python versions.
+    * [pyenv-virtualenv](): Use virtual environments with pyenv
+* [Pytest](): unit testing
+    * [pytest-cov]() plugin for coverage
+* [Black](): code formatter
+* [Flake8](): linting
+* [MyPy](): static type checking
+* [Sphinx](): documentation
+    * recommonmark
+    * napoleon
+
+## Installation
 
 Hon can be installed from PyPI using pip.
 
@@ -44,9 +60,11 @@ Additional files can also be created, and the contents of these files can be mod
 
 Creating the [pyproject.toml](PEP518) file requires some metadata. The only required information is the project name, but other items such as description, version, and dependencies can either be specified on the command line or interactively.
 
-If you do not specify a Python version for the project, the version is obtained from the currently running interpreter. The default Python version can also be specified in the config file. If you have [pyenv]() installed and no currently installed Python version satisfies the specified version, an appropriate version will be insalled for you.
+If you have [pyenv]() installed and no currently installed Python version satisfies the version specified in pyproject.toml, an appropriate version will be insalled for you.
 
 By default, the project is initiated as a git repository and all the newly created files are added to the staging area.
+
+Finally, a virtualenv is created for the project.
 
 ### Configuration
 
@@ -60,34 +78,21 @@ Hon also looks for a `templates/` subfolder. Wihin this folder, you can define a
 
 A recipe mirrors the project directory structure. You only need to provide the files that you want to override from a higher level. Recipes are always additive - there is no way to exlude templates defined at a higher level.
 
-### Virtual environments
-
-After the project is created and initialized, a virtualenv is created in the project's `venv` folder. The following commands manage virtual environments:
-
-* `activate`: activate a virtualenv (by default the one in the current project)
-* `deactivate`: deactivate the current virtualenv
-* `refresh`: delete and recreate a virtualenv
-* `run`: run a command in a virtualenv
-
 ### Project build
 
 The `build` command builds both a wheel and a source distribution into the `dist` folder.
 
-The `deploy` command installs a build into the project's virtualenv (this can also be done using the `--deploy` option of the `build` command). Any dependencies are also installed.
-
-The `install` command installs a build into the system python library (this can also be done using the `--install` option of the `build` command). Any dependencies are also installed. Dependency conflicts are detected and reported. A dependency conflict will cause the install to fail unless the `--force` option is specified.
+The `install` command installs a build into the project's virtualenv (this can also be done using the `--install` option of the `build` command). Any dependencies are also installed.
 
 ### Dependencies
 
-Hon largely wraps the dependency management functionality provided by Poetry.
+Hon largely wraps the dependency management functionality provided by Poetry. The `dep` command has the following subcommands:
 
 * `add`: Add a dependency to the pyproject.toml and install it into the virtualenv
 * `remove`: Remove a dependency to the pyproject.toml and remove it from the virtualenv
 * `update`: Update dependencies within the constraints of their version specifications
 
-These commands also update the lock file (`poetry.lock`), which sets the exact version for each dependency. The lock file can also be manually (re)created using the `lock` command.
-
-Finally, the `search` command enables you to search configured repositories for a dependency.
+These commands also update the lock file (`poetry.lock`), which sets the exact version for each dependency. The lock file can also be manually (re)created using the `lock` subcommand.
 
 ### Code hygine
 
@@ -113,7 +118,7 @@ Bumping the version will also update your CHANGES file as described below.
 
 ### Source control
 
-The `commit` command is `git commit` on steroids. First, any changed files are reformatted (using the `format` command). Next, unless `--force` is specified, the `lint`, `build`, `deploy`, and `test` commands are run. Finally, the changes are committed to the local git repository.
+The `commit` command is `git commit` on steroids. First, any changed files are reformatted (using the `format` command). Next, unless `--force` is specified, the `lint`, `build`, `install`, and `test` commands are run. Finally, the changes are committed to the local git repository.
 
 By default, the commit message is used to add a change to the CHANGES file. This works as follows:
 
@@ -128,6 +133,8 @@ The following options are available:
 * --push Push to the remote after commit
 * --no-change: Do not add this commit message as an entry in the change list
 
+We should note that git already has a mechanism for performing arbitrary tasks prior to commit, called pre-commit hooks, which is orthogonal to, but completely compatible with, Hon. If you'd like to take advantage of this, we recommend the [pre-commit](https://github.com/pre-commit/pre-commit) framework.
+
 ### Changes
 
 Hon manages your CHANGES list for you. Changes can be added automatically when committing code using `commit`. The `change` command can also add an entry for you. Entries are always added to the current (top-most) block.
@@ -139,7 +146,7 @@ A changes block starts out having the title "Unreleased." When the version is bu
 The `release` command creates an official release of your software on GitHub. A release is performed as follows:
 
 * Ensure that the version has been increased since the last release. You cannot make two releases with the same version.
-* If there are any uncommitted files, run the `commit` command (`format`, `lint`, `build`, `deploy`, `test`, and `git commit`)
+* If there are any uncommitted files, run the `commit` command (`format`, `lint`, `build`, `install`, `test`, and `git commit`)
 * `git push --dry-run`, to test whether a push will succeed. If there are any merge conflicts, you'll need to resolve them and try again.
 * Add a tag for the current version using `git tag`
 * `git push`
@@ -159,17 +166,21 @@ Hon can also publish a Docker image for your python command line application. Yo
 
 The `docs` command builds the project documentation and opens the index file in your browser.
 
+### Virtual environments
+
+ The following commands manage virtual environments:
+
+* `refresh`: delete and recreate a virtualenv
+* `run`: run a command in a virtualenv
+
+We suggest following the [instructions](https://github.com/pyenv/pyenv-virtualenv) to add `pyenv virtualenv-init` to your
+shell. This will automatically activate the virtualenv for a project when you `cd` into that project's directory, and deactivate it when you cd out.
+
 ### Project cleanup
 
 The `clean` command deletes transient files in your project directory. By default, this includes all files that match any patterns in the .gitignore file. You can also delete files that are not tracked by git using the `--untracked` option. You can specify additional patterns to clean in the [config.toml](###Configuration) file.
 
 Unless the `--force` option is specified, a paginated list of files to be deleted is shown and confirmation is required to delete the files.
-
-### Shell integrations
-
-Hon comes with a shell script that install a few useful functions:
-
-* Override cd to automatically activate the virtual environment when cd'ing into a project volder, and to automatically deactivate it when cd'ing out.
 
 ## Example Hon workflow
 
@@ -180,24 +191,6 @@ Hon comes with a shell script that install a few useful functions:
 4. Create a release using `hon release`.
 5. Optionally, publish the release to one or more repositories.
 6. Continue development. You can bump the version at release time, or do it sometime later (using `hon version`).
-
-## Dependencies
-
-* Tools
-    * [Poetry](): dependency and build management
-    * [Virtualenv]()/[pyenv-virtualenv](): Create and manage virtual environments
-    * [Pytest](): unit testing (with pytest-cov plugin for coverage)
-    * [Black](): code formatter
-    * [Flake8](): linting
-    * [MyPy](): static type checking
-    * [Sphinx](): documentation
-    * [Git]()/[GitHub](): version control and software releases
-    * Optional support for [Docker]() and [Conda]() deployment
-* Other dependencies
-    * [AutoClick]() and [Click](): command line interface
-    * [tomlkit](): TOML parsing
-    * [GitPython](https://gitpython.readthedocs.io/): git repo actions
-    * [github-release](https://github.com/j0057/github-release)
 
 ## FAQ
 
