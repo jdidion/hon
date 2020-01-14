@@ -15,10 +15,9 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-autoclick = "^0.2.2"
-delegator = "^0.1.1"
+autoclick = "^0.5.1"
 gitpython = "^2.1.11"
-tomlkit = "^0.5.3"
+toml = "^0.10.0"
 
 [tool.poetry.scripts]
 hon = "hon:cli.hon"

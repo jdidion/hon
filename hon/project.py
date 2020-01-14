@@ -3,10 +3,10 @@ from typing import Optional, Sequence
 from urllib.request import urlopen
 
 from git import Repo
-import delegator
 
+from hon import CommandError
 from hon.templates import get_templates
-from hon.utils import read_toml
+from hon.utils import read_toml, run_cmd
 
 
 LICENSE_URL = \
@@ -25,6 +25,7 @@ class UnknownLicenseError(Exception):
 
 class Project:
     def __init__(self, root_dir: Path, git_repo: Optional[Repo] = None):
+        print(root_dir)
         self.root_dir = root_dir
         self._pyproject_file = root_dir / "pyproject.toml"
 
@@ -206,4 +207,4 @@ class Project:
             cmd.append("--show-capture=all")
         if tests:
             cmd.extend(tests)
-        delegator.run(cmd)
+        run_cmd(cmd)

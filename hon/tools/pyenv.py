@@ -1,8 +1,7 @@
 from typing import Optional
 
-from .setup import PyenvVersion as PyenvBase
-
-import delegator
+from hon.tools.setup import PyenvVersion as PyenvBase
+from hon.utils import run_cmd
 
 
 class Pyenv(PyenvBase):
@@ -12,10 +11,10 @@ class Pyenv(PyenvBase):
             self.ensure_python(python_version)
             cmd.append(python_version)
         cmd.append(name)
-        delegator.run(cmd, cwd=self.cwd)
+        run_cmd(cmd, cwd=self.cwd)
 
     def exec(self, cmd):
-        delegator.run(
+        run_cmd(
             [self.executable, "exec"] + cmd,
             env={"PYENV_VERSION": str(self.python_version)},
             cwd=self.cwd

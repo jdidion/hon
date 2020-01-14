@@ -141,6 +141,8 @@ Hon manages your CHANGES list for you. Changes can be added automatically when c
 
 A changes block starts out having the title "Unreleased." When the version is bumped, if the top-most block is named "Unreleased," the title is changed to the version. If a release is performed, the release date is added in parentheses to the title of the top-most block (along with any tags you specify), and a new "Unreleased" block is created (unless the `--bump` option is specified). A new block is also created if the version is bumped without doing a release.
 
+By default, commit messages are expected to follow the [convention](https://chris.beams.io/posts/git-commit/) of the subject being the first line, followed by an optional blank line and body. Only the subject line is added to the change log.
+
 ### Releasing and publishing
 
 The `release` command creates an official release of your software on GitHub. A release is performed as follows:
@@ -209,3 +211,8 @@ I've tried lots of developer tools - these are the best. If you disagree, feel f
 ### Will you support my favorite tool?
 
 Maybe, but probably not. If you haven't already gotten the picture, Hon is unashamedly opinionated. Simplicity and flexibility are usually at odds, and Hon is all about simplicity. That said, feel free to request support for a tool by creating a GitHub issue. You are, of course, also welcome to fork Hon and modify it as you wish.
+
+## Todo
+
+* Look at Nox for testing https://nox.thea.codes/en/stable/
+* Look at Invoke for task management, rather than making direct calls to subprocess http://www.pyinvoke.org/

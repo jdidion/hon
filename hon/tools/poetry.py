@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
-import delegator
+from hon.utils import run_cmd
 
 
 class Poetry:
@@ -53,7 +53,7 @@ class Poetry:
     def _run_command(self, *args, **kwargs):
         cmd = self._get_command(**kwargs)
         cmd.extend(args)
-        delegator.run(cmd, cwd=self.working_dir)
+        run_cmd(cmd, cwd=self.working_dir)
 
     def _get_command(self, debug: bool = False):
         cmd = [self._executable]

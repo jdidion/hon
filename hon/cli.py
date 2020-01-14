@@ -39,7 +39,7 @@ def hon(
     ctx.obj["config"] = Config(config)
 
 
-@hon.command()
+@hon.command(pass_context=True)
 def create(ctx: click.Context, name: str, parent: Optional[Path] = None):
     """
     Create a new project.
@@ -62,8 +62,8 @@ def create(ctx: click.Context, name: str, parent: Optional[Path] = None):
 
     # Call the `poetry init` command, which should result in
     # the creation of the pyproject.toml file
-    poetry = Poetry(ctx.obj["config"].get_tool("poetry"))
-    poetry.init(name, project_dir)
+    poetry = Poetry(ctx.obj["config"].get_tool("poetry"), project_dir)
+    poetry.init(name)
 
     # Now initialize the project directory
     project = Project(project_dir, git_repo=git_repo)
@@ -155,6 +155,7 @@ def test(
     Run unit tests using pytest.
 
     Args:
+        ctx:
         tests: The tests to run.
         debug: Show verbose output.
 
